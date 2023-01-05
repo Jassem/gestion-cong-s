@@ -10,100 +10,105 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Leave
 {
+    const STATUS = [
+        1 => 'demande en attente',
+        2 => 'approuvé',
+        3 => 'refusé'
+    ];
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
+
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
+    private ?\DateTimeInterface $startAt;
+
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
+    private ?\DateTimeInterface $endAt;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $comment;
+    private ?string $commentMessage;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string", length=100)
      */
-    private $statDate;
+    private ?string $currentStatus;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="leaves")
      */
-    private $endDate;
-
-    /**
-     * @ORM\Column(type="string", length=15)
-     */
-    private $status;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Employee::class, inversedBy="leaves")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $employee;
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getComment(): ?string
+    public function getStartAt(): ?\DateTimeInterface
     {
-        return $this->comment;
+        return $this->startAt;
     }
 
-    public function setComment(string $comment): self
+    public function setStartAt(\DateTimeInterface $startAt): self
     {
-        $this->comment = $comment;
+        $this->startAt = $startAt;
 
         return $this;
     }
 
-    public function getStatDate(): ?\DateTimeInterface
+    public function getEndAt(): ?\DateTimeInterface
     {
-        return $this->statDate;
+        return $this->endAt;
     }
 
-    public function setStatDate(\DateTimeInterface $statDate): self
+    public function setEndAt(\DateTimeInterface $endAt): self
     {
-        $this->statDate = $statDate;
+        $this->endAt = $endAt;
 
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getCommentMessage(): ?string
     {
-        return $this->endDate;
+        return $this->commentMessage;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setCommentMessage(?string $commentMessage): self
     {
-        $this->endDate = $endDate;
+        $this->commentMessage = $commentMessage;
 
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getCurrentStatus(): ?string
     {
-        return $this->status;
+        return $this->currentStatus;
     }
 
-    public function setStatus(string $status): self
+    public function setCurrentStatus(string $currentStatus): self
     {
-        $this->status = $status;
+        $this->currentStatus = $currentStatus;
 
         return $this;
     }
 
-    public function getEmployee(): ?Employee
+    public function getUser(): ?User
     {
-        return $this->employee;
+        return $this->user;
     }
 
-    public function setEmployee(?Employee $employee): self
+    public function setUser(?User $user): self
     {
-        $this->employee = $employee;
+        $this->user = $user;
 
         return $this;
     }
