@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=LeaveRepository::class)
+ * @ORM\Table(name="leave_tab")
  */
 class Leave
 {
@@ -46,7 +47,7 @@ class Leave
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="leaves")
      */
-    private $user;
+    private ?User $user;
 
     public function getId(): ?int
     {
