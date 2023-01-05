@@ -22,18 +22,21 @@ class AppFixtures extends Fixture
         $user = new User();
         $user->setRoles(['ROLE_EMPLOYEE']);
         $user->setUsername('yassine');
+        $user->setIsAdmin(false);
         $user->setPassword($this->encoder->encodePassword($user, 'yassine*'));
         $manager->persist($user);
 
         $user = new User();
         $user->setRoles(['ROLE_EMPLOYEE']);
         $user->setUsername('ahmed');
+        $user->setIsAdmin(false);
         $user->setPassword($this->encoder->encodePassword($user, 'ahmed*'));
         $manager->persist($user);
 
         $user = new User();
         $user->setRoles(['ROLE_ADMIN']);
         $user->setUsername('admin');
+        $user->setIsAdmin(true);
         $user->setPassword($this->encoder->encodePassword($user, 'admin*'));
         $manager->persist($user);
 

@@ -28,7 +28,7 @@ class LeaveController extends AbstractController
     /**
      * @Route("/", name="list")
      */
-    public function index(Request $request): Response
+    public function list(Request $request): Response
     {
         $leave = new Leave();
         $form = $this->createForm(LeaveType::class, $leave, ['action' => $this->generateUrl('app_leave_list')]);
@@ -41,11 +41,37 @@ class LeaveController extends AbstractController
                 $this->em->persist($leave);
 
                 $this->em->flush();
+
+                $leave = new Leave();
+                $form = $this->createForm(LeaveType::class, $leave, ['action' => $this->generateUrl('app_leave_list')]);
             }
+        }
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $leaves = $this->em->getRepository(Leave::class)->findBy(['currentStatus' => Leave::STATUS[1]]);
+        } else {
+            $leaves = $this->em->getRepository(Leave::class)->findBy(['user' => $this->getUser()]);
         }
 
         return $this->renderForm('leave/index.html.twig', [
             'form' => $form,
+            'leaves' => $leaves
         ]);
+    }
+
+    /**
+     * @Route("/{leave}/{action}", name="approval")
+     */
+    public function approvalLeave(Leave $leave,string $action, Request $request): Response
+    {
+        if($action === 'approved'){
+            $leave->setCurrentStatus(Leave::STATUS[2]);
+        }else{
+            $leave->setCurrentStatus(Leave::STATUS[3]);
+        }
+
+        $this->em->flush();
+
+        return $this->redirectToRoute('app_leave_list');
     }
 }

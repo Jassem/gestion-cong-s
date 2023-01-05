@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello LeaveController!{% endblock %}
+
+{% block body %}
+
+    <div class="example-wrapper container">
+        <h1>List des employées! ✅</h1>
+
+        <table id="table_leaves" class="display">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for employe in employees %}
+                <tr>
+                    <td>{{ employe.id }}</td>
+                    <td>
+                        {{ employe.username }}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_employee_list_leave', {user: employe.id}) }}"
+                           class="btn btn-info"><i class="fa-solid fa-search"></i> Détails</a>
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}
